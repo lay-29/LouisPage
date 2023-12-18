@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown Content with Outline</title>
+    <style>
+        body {
+            display: flex;
+        }
+
+        #markdown-content {
+            flex-grow: 1;
+            padding: 20px;
+        }
+
+        #outline {
+            width: 200px;
+            padding: 20px;
+            background-color: #f4f4f4;
+            border-right: 1px solid #ccc;
+        }
+
+        #outline ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #outline li {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="outline"></div>
+
+    <div id="markdown-content"></div>
+
+    <script>
+        // 使用JavaScript动态加载Markdown文件
+        fetch('CSharpThread.md')
+            .then(response => response.text())
+            .then(markdownText => {
+                // 将Markdown内容转换为HTML
+                const converter = new showdown.Converter();
+                const htmlContent = converter.makeHtml(markdownText);
+
+                // 将HTML内容插入到页面中
+                document.getElementById('markdown-content').innerHTML = htmlContent;
+
+                // 提取标题信息并创建目录
+                const outlineElement = document.getElementById('outline');
+                const titles = htmlContent.match(/<h([1-6])[^>]*>([^<]+)<\/h[1-6]>/gi);
+
+                if (titles) {
+                    outlineElement.innerHTML = '<h2>Outline</h2><ul>';
+                    titles.forEach(title => {
+                        const level = title.charAt(2);
+                        const text = title.match(/<h[1-6][^>]*>([^<]+)<\/h[1-6]>/i)[1];
+                        outlineElement.innerHTML += `<li style="margin-left: ${(level - 1) * 10}px;"><a href="#${text.toLowerCase().replace(/\s+/g, '-')}">${text}</a></li>`;
+                    });
+                    outlineElement.innerHTML += '</ul>';
+                }
+            })
+            .catch(error => console.error('Error loading Markdown file:', error));
+    </script>
+
+    <!-- 引入 Showdown 库，用于将 Markdown 转换为 HTML -->
+    <script src="https://cdn.jsdelivr.net/npm/showdown@1.9.1/dist/showdown.min.js"></script>
+
+</body>
+</html>
