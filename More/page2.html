@@ -3,9 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Markdown Content</title>
+    <title>Markdown Content with Outline</title>
+    <style>
+        body {
+            display: flex;
+        }
+
+        #markdown-content {
+            flex-grow: 1;
+            padding: 20px;
+        }
+
+        #outline {
+            width: 200px;
+            padding: 20px;
+            background-color: #f4f4f4;
+            border-right: 1px solid #ccc;
+            overflow-y: scroll;
+        }
+
+        #outline ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #outline li {
+            margin-bottom: 8px;
+        }
+    </style>
 </head>
 <body>
+
+    <div id="outline"></div>
 
     <div id="markdown-content"></div>
 
@@ -20,8 +49,31 @@
 
                 // 将HTML内容插入到页面中
                 document.getElementById('markdown-content').innerHTML = htmlContent;
+
+                // 提取标题信息并创建目录
+                const outlineElement = document.getElementById('outline');
+                const titles = htmlContent.match(/<h([1-6])[^>]*>([^<]+)<\/h[1-6]>/gi);
+
+                if (titles) {
+                    outlineElement.innerHTML = '<h2>Outline</h2><ul>';
+                    titles.forEach(title => {
+                        const level = title.charAt(2);
+                        const text = title.match(/<h[1-6][^>]*>([^<]+)<\/h[1-6]>/i)[1];
+                        const anchor = text.toLowerCase().replace(/\s+/g, '-');
+                        outlineElement.innerHTML += `<li style="margin-left: ${(level - 1) * 10}px;"><a href="#${anchor}" onclick="scrollToAnchor('${anchor}')">${text}</a></li>`;
+                    });
+                    outlineElement.innerHTML += '</ul>';
+                }
             })
             .catch(error => console.error('Error loading Markdown file:', error));
+
+        // JavaScript函数，用于滚动到指定锚点
+        function scrollToAnchor(anchor) {
+            const targetElement = document.getElementById(anchor);
+            if (targetElement) {
+                targetElement.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
     </script>
 
     <!-- 引入 Showdown 库，用于将 Markdown 转换为 HTML -->
