@@ -4,25 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Louis - Personal Website</title>
+    <link rel="icon" href="favicon.png" type="image/png">
+    <link rel="shortcut icon" href="favicon.png" type="image/png">
+
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
+            margin: 0px 0px 0px 0px;
             padding: 0;
             background-color: #f4f4f4;
         }
 
-        header {
-            background-color: #333;
-            color: #fff;
+        #nameHeader {
+           background: #333;
             text-align: center;
+            margin: 10px 0px 0px 0px;
             padding: 1em;
+            width: 100%;
         }
 
+        .tittleStr {
+            font-style: italic;
+            /* text-decoration-color: red;
+            text-emphasis:sesame;
+            text-emphasis-color: red;
+            text-emphasis-position: under right; */
+            background: linear-gradient(to top right, rgb(4, 0, 240,0.5), rgb(248, 0, 236,0.5));
+            -webkit-background-clip :text;
+            color: transparent; 
+}
         nav {
             background-color: #444;
             padding: 1em;
             text-align: center;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000; 
         }
 
         nav a {
@@ -41,26 +60,28 @@
             color: #fff;
             text-align: center;
             padding: 1em;
-            position: fixed;
+            width: 100%;
             bottom: 0;
             width: 100%;
         }
     </style>
 </head>
-<body>
 
-    <header>
-        <h1>LOUIS</h1>
-        <p>BUG Maker | Designer Q-Q</p>
+<nav>
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#contact">Contact</a>
+    <a href="More/page2.html">More</a>
+</nav>
+
+<body>
+    <header id="nameHeader">
+        <h1 class="tittleStr">LOUIS</h1>
+        <p class="tittleStr">BUG Maker | Designer Q-Q</p>
     </header>
 
-    <nav>
-        <a href="#home">Home</a>
-        <a href="#about">About</a>
-        <a href="#skills">Skills</a>
-        <a href="#contact">Contact</a>
-        <a href="More/page2.html">More</a>
-    </nav>
+   
 
     <section id="home">
         <h2>Welcome to My Personal Website</h2>
