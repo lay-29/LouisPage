@@ -1,0 +1,13 @@
+*.pdb
+*.obj
+*.cache
+*.suo
+*.dll
+*.CopyComplete
+Debug/
+Release/
+.vs/
+.vscode/
+
+
+

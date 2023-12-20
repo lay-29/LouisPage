@@ -1,16 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>123Markdown Content with Outline</title>
+    <link rel="icon" href="../favicon.png" type="image/png">
+    <link rel="shortcut icon" href="../favicon.png" type="image/png">
+
     <style>
         body {
             display: flex;
+            margin: 0;
+            /* 设置 body 边距为 0，以免影响滚动 */
         }
 
         #markdown-content {
             flex-grow: 1;
+            background: blue transparent;
             padding: 20px;
         }
 
@@ -20,6 +27,10 @@
             background-color: #f4f4f4;
             border-right: 1px solid #ccc;
             overflow-y: scroll;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            /* 设置高度为视口高度，使滚动生效 */
         }
 
         #outline ul {
@@ -27,17 +38,35 @@
             padding: 0;
         }
 
+        #outline a {
+            font-weight: 600;
+            font-style:normal;
+            color: rgba(0, 0, 0, 0.5);
+            /* 设置链接文本颜色 */
+            text-decoration: none;
+            /* 显示下划线 */
+
+        }
+
         #outline li {
             margin-bottom: 8px;
         }
     </style>
 </head>
+
 <body>
 
-    <div id="outline"></div>
+    <div id="outline">
+        <ul>
+            <li><a href="#markdown-content">Markdown Content</a></li>
+            <li><a href="#outline">Outline</a></li>
+        </ul>
+    </div>
 
     <div id="markdown-content"></div>
 
+    <!-- 引入 Showdown 库，用于将 Markdown 转换为 HTML -->
+    <script src="https://cdn.jsdelivr.net/npm/showdown@1.9.1/dist/showdown.min.js"></script>
     <script>
         // 使用JavaScript动态加载Markdown文件
         fetch('CSharpThread.md')
@@ -47,37 +76,126 @@
                 const converter = new showdown.Converter();
                 const htmlContent = converter.makeHtml(markdownText);
 
-                // 将HTML内容插入到页面中
-                document.getElementById('markdown-content').innerHTML = htmlContent;
+                const MKbody = document.createElement('div');
+                // 将HTML字符串赋值给div的innerHTML属性，这样浏览器会自动解析HTML
+                MKbody.innerHTML = htmlContent;
+
+                setAllChildrenID(MKbody);
+                console.log(MKbody);
 
                 // 提取标题信息并创建目录
                 const outlineElement = document.getElementById('outline');
-                const titles = htmlContent.match(/<h([1-6])[^>]*>([^<]+)<\/h[1-6]>/gi);
+                var titles = MKbody.innerHTML.match(/<h([1-6])[^>]*>([^<]+)<\/h[1-6]>/gi);
+
+
 
                 if (titles) {
                     outlineElement.innerHTML = '<h2>Outline</h2><ul>';
                     titles.forEach(title => {
                         const level = title.charAt(2);
-                        const text = title.match(/<h[1-6][^>]*>([^<]+)<\/h[1-6]>/i)[1];
-                        const anchor = text.toLowerCase().replace(/\s+/g, '-');
+                        var anchor = GetIdAttribute(title);
+
+
+                        var textArry = title.match(/<h[1-6][^>]*>([^<]+)<\/h[1-6]>/i);
+
+
+
+                        const text = textArry[1];
+
+                        //console.log(textArry[0]);
+                        //console.log(text);
                         outlineElement.innerHTML += `<li style="margin-left: ${(level - 1) * 10}px;"><a href="#${anchor}" onclick="scrollToAnchor('${anchor}')">${text}</a></li>`;
                     });
                     outlineElement.innerHTML += '</ul>';
                 }
+                //console.log(htmlContent);
+                //console.log(outlineElement);
+
+
+                // 将HTML内容插入到页面中
+                document.getElementById('markdown-content').innerHTML = MKbody.outerHTML;
+                console.log(document.getElementById('markdown-content'));
             })
             .catch(error => console.error('Error loading Markdown file:', error));
 
         // JavaScript函数，用于滚动到指定锚点
+
         function scrollToAnchor(anchor) {
-            const targetElement = document.getElementById(anchor);
-            if (targetElement) {
-                targetElement.scrollIntoView({ behavior: 'smooth' });
+            try {
+
+                const targetElement = document.getElementById(anchor);
+                if (targetElement) {
+                    console.log(`Go To :: ${anchor.toString()}`);
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+            } catch (error) {
+                console.error('Error scrolling to anchor:', error);
             }
         }
+
+
+
+        function GetIdAttribute(htmlString) {
+            //console.log(htmlString);
+            //console.log(tagName);
+            // 创建一个虚拟的div元素
+            const tempDiv = document.createElement('div');
+            // 将HTML字符串赋值给div的innerHTML属性，这样浏览器会自动解析HTML
+            tempDiv.innerHTML = htmlString;
+            const targetElement = tempDiv.querySelector("*");
+            if (targetElement) {
+                // 获取旧ID
+                var oldId = targetElement.id;
+                return oldId;
+            } else {
+                // 如果未找到指定标签，返回原始HTML
+                return null;
+            }
+
+
+        }
+
+        //遍历MK Html 元素并设定ID
+        var id = 1;
+        function setAllChildrenID(parentElement) {
+            // 获取所有 <h1>, <h2>, <h3>, <h4>, <h5>, <h6> 元素
+            const headings = parentElement.querySelectorAll("h1, h2, h3, h4, h5, h6");
+
+            // 遍历这些元素
+            headings.forEach(heading => {
+                heading.id = `h_${id++}`;
+                // 递归处理子元素
+                setAllChildrenID(heading);
+            });
+        }
+
+
+
+
+        //更改ID方法
+        // function updateIdAttribute(htmlString, tagName) {
+        //     // 创建一个虚拟的div元素
+        //     const tempDiv = document.createElement('div');
+        //     // 将HTML字符串赋值给div的innerHTML属性，这样浏览器会自动解析HTML
+        //     tempDiv.innerHTML = htmlString;
+
+        //     // 查找指定标签
+        //     const targetElement = tempDiv.querySelector("*");
+        //     if (targetElement) {
+        //         // 使用新的id替换旧的id
+        //         const newId = tagName.toLowerCase();
+        //         targetElement.id = newId;
+
+        //         // 返回更新后的HTML
+        //         return tempDiv.innerHTML;
+        //     } else {
+        //         // 如果未找到指定标签，返回原始HTML
+        //         return htmlString;
+        //     }
+        // }
     </script>
 
-    <!-- 引入 Showdown 库，用于将 Markdown 转换为 HTML -->
-    <script src="https://cdn.jsdelivr.net/npm/showdown@1.9.1/dist/showdown.min.js"></script>
 
 </body>
+
 </html>

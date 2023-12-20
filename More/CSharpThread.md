@@ -66,7 +66,7 @@ b资源也有有上限——5辆车只有3条道
 
 ​	正是因为多线程不可预测性，很多时候你的想法并不一定能够贯彻实施，也许大多数情况ok，但是总有一定概率出现问题。
 
- 
+##  BeginInvoke
 
 ### 委托异步回调控制顺序   BeginInvoke
 
@@ -178,6 +178,8 @@ IAsyncResult asyncResult =func.BeginInvoke(ar=>{
 ```
 
 
+
+## Thread
 
 ### Thread操作线程的各种API和Thread的缺陷
 
@@ -400,7 +402,7 @@ Thread.Slepp(5000);
 Console.WriteLine(intList.Count);
 ```
 
-#### 线程锁Lock
+### 线程锁Lock
 
 加lock就能解决线程安全问题，就是单线程化，Lock就是保障方法块儿任意时刻只有一个线程能进去，其他线程排队
 
@@ -556,7 +558,7 @@ this也可以当锁来使用  （不用创建直接用）
 
 
 
-## await,async
+### await,async
 
 执行和演练
 
