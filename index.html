@@ -18,7 +18,7 @@
         #nameHeader {
            background: #333;
             text-align: center;
-            margin: 0px 0px 0px 0px;
+            margin: 20px 0px 0px 0px;
             padding: 1em;
             width: 100%;
         }
@@ -29,7 +29,7 @@
             text-emphasis:sesame;
             text-emphasis-color: red;
             text-emphasis-position: under right; */
-            background: linear-gradient(to top right, rgb(4, 0, 240,0.5), rgb(248, 0, 236,0.5));
+            background: linear-gradient(to top right, rgb(201, 4, 255), rgb(34, 255, 0));
             -webkit-background-clip :text;
             color: transparent; 
 }
@@ -38,10 +38,12 @@
             padding: 1em;
             text-align: center;
             width: 100%;
+            height: 12px;
             position: fixed;
             top: 0;
             left: 0;
             z-index: 1000; 
+            
         }
 
         nav a {
@@ -49,8 +51,12 @@
             text-decoration: none;
             padding: 1em;
             margin: 0 1em;
+            transition: 0.5s;
         }
-
+        
+        nav a:hover{
+            background-color: rgba(0, 0, 0, 0.5);
+        }
         section {
             padding: 2em;
         }
