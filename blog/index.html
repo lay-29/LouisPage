@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Posts</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <h1>Blog Posts</h1>
+    <ul id="post-list"></ul>
+
+    <script>
+        const posts = [
+            { title: 'Welcome to My Blog', file: 'posts/welcome.md' }
+        ];
+
+        const list = document.getElementById('post-list');
+        posts.forEach(p => {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = `view.html?file=${encodeURIComponent(p.file)}`;
+            a.textContent = p.title;
+            li.appendChild(a);
+            list.appendChild(li);
+        });
+    </script>
+</body>
+</html>
