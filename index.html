@@ -24,20 +24,25 @@
             100% {background-position: 0% 50%;}
         }
 
-        #nameHeader {
-            background: linear-gradient(135deg, #4e54c8, #8f94fb);
-            text-align: center;
-            margin: 0;
-            padding: 2em 1em;
-            color: #fff;
-        }
-
         .tittleStr {
             font-style: italic;
             background: linear-gradient(45deg, #a1c4fd, #c2e9fb);
             -webkit-background-clip: text;
             color: transparent;
             animation: hueRotate 5s linear infinite;
+            padding: 0;
+        }
+
+        #intro h2 {
+            font-size: 1.2em;
+            margin-top: 1em;
+        }
+
+        .divider {
+            height: 4px;
+            background: linear-gradient(90deg, #4e54c8, #8f94fb);
+            border: none;
+            margin: 1em 0;
         }
 
         @keyframes hueRotate {
@@ -81,16 +86,14 @@
 </head>
 
 <body>
-    <header id="nameHeader">
-        <h1 class="tittleStr">LOUIS</h1>
-    </header>
-
     <div id="main-container">
         <div id="intro">
+            <h1 class="tittleStr">LOUIS</h1>
             <p class="tagline">BUG Maker | Designer Q-Q</p>
             <h2>About Me</h2>
             <p>Hi, I'm Louis, a developer and designer who enjoys creating web projects. This site hosts my experiments and thoughts.</p>
-            <h3>Skills</h3>
+            <hr class="divider">
+            <h2>Skills</h2>
             <ul>
                 <li>HTML</li>
                 <li>CSS</li>
@@ -155,11 +158,14 @@
             }
         }
 
-        document.addEventListener('DOMContentLoaded', renderPosts);
+        document.addEventListener('DOMContentLoaded', () => {
+            renderPosts();
+            document.getElementById('year').textContent = new Date().getFullYear();
+        });
     </script>
 
     <footer>
-        <p>&copy; 2023 LOUIS WANG. All rights reserved.</p>
+        <p>&copy; <span id="year"></span> LOUIS WANG. All rights reserved.</p>
     </footer>
 
 </body>
