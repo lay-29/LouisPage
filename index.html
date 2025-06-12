@@ -10,40 +10,48 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0px 0px 0px 0px;
+            margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background: linear-gradient(45deg, #ff0066, #ffa600, #00e5ff);
+            background-size: 600% 600%;
+            animation: gradientMove 20s ease infinite;
+        }
+
+        @keyframes gradientMove {
+            0% {background-position: 0% 50%;}
+            50% {background-position: 100% 50%;}
+            100% {background-position: 0% 50%;}
         }
 
         #nameHeader {
-           background: #333;
+            background: linear-gradient(135deg, #ff0099, #493240);
             text-align: center;
-            margin: 20px 0px 0px 0px;
-            padding: 1em;
-            width: 100%;
+            margin: 80px 0 0 0;
+            padding: 2em 1em;
+            color: #fff;
         }
 
         .tittleStr {
             font-style: italic;
-            /* text-decoration-color: red;
-            text-emphasis:sesame;
-            text-emphasis-color: red;
-            text-emphasis-position: under right; */
-            background: linear-gradient(to top right, rgb(201, 4, 255), rgb(34, 255, 0));
-            -webkit-background-clip :text;
-            color: transparent; 
-}
+            background: linear-gradient(45deg, #ffea00, #ff00d4);
+            -webkit-background-clip: text;
+            color: transparent;
+            animation: hueRotate 5s linear infinite;
+        }
+
+        @keyframes hueRotate {
+            from { filter: hue-rotate(0deg); }
+            to { filter: hue-rotate(360deg); }
+        }
         #headerNav {
-            background-color: #444;
-            padding: 1em;
+            background: linear-gradient(to right, #00c6ff, #0072ff);
+            padding: 1em 0;
             text-align: center;
             width: 100%;
-            height: 12px;
             position: fixed;
             top: 0;
             left: 0;
-            z-index: 1000; 
-            
+            z-index: 1000;
         }
 
         nav a {
@@ -51,23 +59,29 @@
             text-decoration: none;
             padding: 1em;
             margin: 0 1em;
-            transition: 0.5s;
+            transition: background-color 0.3s, color 0.3s, transform 0.3s;
+            border-radius: 4px;
         }
-        
-        nav a:hover{
-            background-color: rgba(0, 0, 0, 0.5);
+
+        nav a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #ffeb3b;
+            transform: scale(1.1);
         }
         section {
             padding: 2em;
+            background-color: rgba(255, 255, 255, 0.8);
+            margin: 2em auto;
+            max-width: 800px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
         footer {
-            background-color: #333;
+            background: linear-gradient(135deg, #0072ff, #00c6ff);
             color: #fff;
             text-align: center;
-            padding: 1em;
-            width: 100%;
-            bottom: 0;
+            padding: 1.5em 1em;
             width: 100%;
         }
     </style>

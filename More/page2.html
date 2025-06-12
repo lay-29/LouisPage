@@ -12,13 +12,17 @@
         body {
             display: flex;
             margin: 0;
+            background: linear-gradient(45deg, #ff0066, #ffa600, #00e5ff);
+            background-size: 600% 600%;
+            animation: gradientMove 20s ease infinite;
             /* 设置 body 边距为 0，以免影响滚动 */
         }
 
         #markdown-content {
             flex-grow: 1;
-            background: blue transparent;
             padding: 20px;
+            backdrop-filter: blur(10px);
+            color: #000;
         }
 
         #outline {
@@ -50,6 +54,12 @@
 
         #outline li {
             margin-bottom: 8px;
+        }
+
+        @keyframes gradientMove {
+            0% {background-position: 0% 50%;}
+            50% {background-position: 100% 50%;}
+            100% {background-position: 0% 50%;}
         }
     </style>
 </head>
