@@ -6,6 +6,7 @@
     <title>Louis - Personal Website</title>
     <link rel="icon" href="favicon.png" type="image/png">
     <link rel="shortcut icon" href="favicon.png" type="image/png">
+    <link rel="stylesheet" href="style.css">
 
     <style>
         body {
@@ -43,38 +44,22 @@
             from { filter: hue-rotate(0deg); }
             to { filter: hue-rotate(360deg); }
         }
-        #headerNav {
-            background: linear-gradient(to right, #2575fc, #6a11cb);
-            padding: 1em 0;
-            text-align: center;
-            width: 100%;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 1000;
+        #main-container {
+            display: flex;
+            margin: 2em;
         }
 
-        nav a {
-            color: #fff;
-            text-decoration: none;
-            padding: 1em;
-            margin: 0 1em;
-            transition: background-color 0.3s, color 0.3s, transform 0.3s;
-            border-radius: 4px;
-        }
-
-        nav a:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-            color: #ffeb3b;
-            transform: scale(1.1);
-        }
-        section {
-            padding: 2em;
+        #intro {
+            flex: 1;
+            margin-right: 2em;
             background-color: rgba(255, 255, 255, 0.8);
-            margin: 2em auto;
-            max-width: 800px;
+            padding: 1.5em;
             border-radius: 8px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        #post-list {
+            flex: 3;
         }
 
         footer {
@@ -87,48 +72,82 @@
     </style>
 </head>
 
-<nav id="headerNav">
-    <a href="#home">Home</a>
-    <a href="#about">About</a>
-    <a href="#skills">Skills</a>
-    <a href="#contact">Contact</a>
-    <a href="More/page2.html">More</a>
-    <a href="blog/index.html">Blog</a>
-</nav>
-
 <body>
     <header id="nameHeader">
         <h1 class="tittleStr">LOUIS</h1>
         <p class="tittleStr">BUG Maker | Designer Q-Q</p>
     </header>
 
-   
+    <div id="main-container">
+        <div id="intro">
+            <h2>About Me</h2>
+            <p>Hi, I'm Louis, a developer and designer who enjoys creating web projects. This site hosts my experiments and thoughts.</p>
+            <h3>Skills</h3>
+            <ul>
+                <li>HTML</li>
+                <li>CSS</li>
+                <li>JavaScript</li>
+            </ul>
+            <p>Email: your.email@example.com<br>LinkedIn: linkedin.com/in/yourname</p>
+        </div>
+        <div id="post-list"></div>
+    </div>
 
-    <section id="home">
-        <h2>Welcome to My Personal Website</h2>
-        <p>This is a simple template for a personal website. Feel free to customize and use it for your own needs.</p>
-    </section>
+    <script src="import/showdown.min.js"></script>
+    <script>
+        const posts = [
+            { title: 'Welcome to My Blog', file: 'blog/posts/welcome.md', cover: 'blog/covers/red.svg' },
+            { title: 'Exploring CSS Tricks', file: 'blog/posts/post1.md', cover: 'blog/covers/green.svg' },
+            { title: 'JavaScript Tips', file: 'blog/posts/post2.md', cover: 'blog/covers/blue.svg' },
+            { title: 'Design Inspirations', file: 'blog/posts/post3.md', cover: 'blog/covers/purple.svg' },
+            { title: 'C# \u591A\u7EBF\u7A0B', file: 'blog/posts/thread.md', cover: 'blog/covers/red.svg' }
+        ];
 
-    <section id="about">
-        <h2>About Me</h2>
-        <p>Hi, I'm Louis, a developer and designer who enjoys creating web projects. This site hosts my experiments and thoughts.</p>
-    </section>
+        function fetchExcerpt(file) {
+            return fetch(file)
+                .then(r => r.text())
+                .then(md => {
+                    const parts = md.split(/\n\n+/);
+                    for (const part of parts) {
+                        const t = part.trim();
+                        if (t && !t.startsWith('#')) {
+                            return t;
+                        }
+                    }
+                    return '';
+                })
+                .catch(() => '');
+        }
 
-    <section id="skills">
-        <h2>Skills</h2>
-        <ul>
-            <li>HTML</li>
-            <li>CSS</li>
-            <li>JavaScript</li>
-            <!-- Add more skills as needed -->
-        </ul>
-    </section>
+        async function renderPosts() {
+            const container = document.getElementById('post-list');
+            for (const p of posts) {
+                const card = document.createElement('div');
+                card.className = 'post-card';
+                const img = document.createElement('img');
+                img.src = p.cover;
+                card.appendChild(img);
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'post-card-content';
+                const h2 = document.createElement('h2');
+                h2.textContent = p.title;
+                contentDiv.appendChild(h2);
+                const para = document.createElement('p');
+                para.textContent = 'Loading...';
+                contentDiv.appendChild(para);
+                const link = document.createElement('a');
+                link.href = `blog/view.html?file=${encodeURIComponent(p.file)}`;
+                link.textContent = 'Read more';
+                contentDiv.appendChild(link);
+                card.appendChild(contentDiv);
+                card.onclick = () => { window.location.href = link.href; };
+                container.appendChild(card);
+                fetchExcerpt(p.file).then(text => { para.textContent = text; });
+            }
+        }
 
-    <section id="contact">
-        <h2>Contact Me</h2>
-        <p>Email: your.email@example.com</p>
-        <p>LinkedIn: linkedin.com/in/yourname</p>
-    </section>
+        document.addEventListener('DOMContentLoaded', renderPosts);
+    </script>
 
     <footer>
         <p>&copy; 2023 LOUIS WANG. All rights reserved.</p>
