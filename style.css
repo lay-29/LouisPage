@@ -73,7 +73,8 @@ h1 {
 /* Blog post view styles */
 #content {
     max-width: 800px;
-    margin: 0 auto;
+    margin: 2em auto;
+    padding: 0 1em;
 }
 
 #content h1,
@@ -83,4 +84,16 @@ h1 {
 #content h5,
 #content h6 {
     font-weight: bold;
+}
+
+/* Styling for code blocks in posts */
+#content pre {
+    background-color: #f5f5f5;
+    padding: 1em;
+    overflow-x: auto;
+    border-radius: 4px;
+}
+
+#content code {
+    font-family: "Courier New", monospace;
 }
