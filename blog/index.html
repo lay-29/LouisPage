@@ -8,22 +8,84 @@
 </head>
 <body>
     <h1>Blog Posts</h1>
-    <ul id="post-list"></ul>
+    <div id="post-list"></div>
+    <div id="pagination"></div>
 
     <script>
         const posts = [
-            { title: 'Welcome to My Blog', file: 'posts/welcome.md' }
+            { title: 'Welcome to My Blog', file: 'posts/welcome.md', cover: 'covers/red.svg' },
+            { title: 'Exploring CSS Tricks', file: 'posts/post1.md', cover: 'covers/green.svg' },
+            { title: 'JavaScript Tips', file: 'posts/post2.md', cover: 'covers/blue.svg' },
+            { title: 'Design Inspirations', file: 'posts/post3.md', cover: 'covers/purple.svg' }
         ];
 
-        const list = document.getElementById('post-list');
-        posts.forEach(p => {
-            const li = document.createElement('li');
-            const a = document.createElement('a');
-            a.href = `view.html?file=${encodeURIComponent(p.file)}`;
-            a.textContent = p.title;
-            li.appendChild(a);
-            list.appendChild(li);
-        });
+        const postsPerPage = 3;
+        let currentPage = 1;
+
+        function fetchExcerpt(file) {
+            return fetch(file)
+                .then(r => r.text())
+                .then(md => {
+                    const parts = md.split(/\n\n+/);
+                    for (const part of parts) {
+                        const t = part.trim();
+                        if (t && !t.startsWith('#')) {
+                            return t;
+                        }
+                    }
+                    return '';
+                })
+                .catch(() => '');
+        }
+
+        async function renderPage(page) {
+            const container = document.getElementById('post-list');
+            container.innerHTML = '';
+            const start = (page - 1) * postsPerPage;
+            const end = Math.min(start + postsPerPage, posts.length);
+            for (let i = start; i < end; i++) {
+                const p = posts[i];
+                const card = document.createElement('div');
+                card.className = 'post-card';
+                const img = document.createElement('img');
+                img.src = p.cover;
+                card.appendChild(img);
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'post-card-content';
+                const h2 = document.createElement('h2');
+                h2.textContent = p.title;
+                contentDiv.appendChild(h2);
+                const para = document.createElement('p');
+                para.textContent = 'Loading...';
+                contentDiv.appendChild(para);
+                const link = document.createElement('a');
+                link.href = `view.html?file=${encodeURIComponent(p.file)}`;
+                link.textContent = 'Read more';
+                contentDiv.appendChild(link);
+                card.appendChild(contentDiv);
+                container.appendChild(card);
+                fetchExcerpt(p.file).then(text => { para.textContent = text; });
+            }
+            updatePagination();
+        }
+
+        function updatePagination() {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+            const totalPages = Math.ceil(posts.length / postsPerPage);
+            const prev = document.createElement('button');
+            prev.textContent = 'Prev';
+            prev.disabled = currentPage === 1;
+            prev.onclick = () => { currentPage--; renderPage(currentPage); };
+            pagination.appendChild(prev);
+            const next = document.createElement('button');
+            next.textContent = 'Next';
+            next.disabled = currentPage === totalPages;
+            next.onclick = () => { currentPage++; renderPage(currentPage); };
+            pagination.appendChild(next);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => renderPage(currentPage));
     </script>
 </body>
 </html>
