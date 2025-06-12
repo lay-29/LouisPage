@@ -27,7 +27,7 @@
         #nameHeader {
             background: linear-gradient(135deg, #4e54c8, #8f94fb);
             text-align: center;
-            margin: 80px 0 0 0;
+            margin: 0;
             padding: 2em 1em;
             color: #fff;
         }
@@ -58,6 +58,14 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
+        .tagline {
+            font-weight: bold;
+            border-bottom: 2px solid #4e54c8;
+            padding-bottom: 0.5em;
+            margin-bottom: 0.5em;
+            color: #4e54c8;
+        }
+
         #post-list {
             flex: 3;
         }
@@ -75,11 +83,11 @@
 <body>
     <header id="nameHeader">
         <h1 class="tittleStr">LOUIS</h1>
-        <p class="tittleStr">BUG Maker | Designer Q-Q</p>
     </header>
 
     <div id="main-container">
         <div id="intro">
+            <p class="tagline">BUG Maker | Designer Q-Q</p>
             <h2>About Me</h2>
             <p>Hi, I'm Louis, a developer and designer who enjoys creating web projects. This site hosts my experiments and thoughts.</p>
             <h3>Skills</h3>
@@ -136,7 +144,8 @@
                 para.textContent = 'Loading...';
                 contentDiv.appendChild(para);
                 const link = document.createElement('a');
-                link.href = `blog/view.html?file=${encodeURIComponent(p.file)}`;
+                const viewFile = p.file.replace(/^blog\//, '');
+                link.href = `blog/view.html?file=${encodeURIComponent(viewFile)}`;
                 link.textContent = 'Read more';
                 contentDiv.appendChild(link);
                 card.appendChild(contentDiv);
